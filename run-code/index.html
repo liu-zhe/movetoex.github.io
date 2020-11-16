@@ -110,12 +110,10 @@ document.querySelector('.run-btn').addEventListener('click', function() {
     run();
 });
 
-var editor;
-
 document.addEventListener('DOMContentLoaded', () => {
     require.config({ paths: { vs: '/js/monaco-editor/min/vs' } });
     require(['vs/editor/editor.main'], function () {
-        editor = monaco.editor.create(document.querySelector('.src-container'), {
+        var editor = monaco.editor.create(document.querySelector('.src-container'), {
             value: [
                 '// Fetching source...'
             ].join('\n'),
