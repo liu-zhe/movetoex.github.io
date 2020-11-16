@@ -386,7 +386,110 @@ p.spoiler {
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>键盘，是一个很重要的工具，负责用户输入。在CUI中，键盘处理从来就不是我们要操心的事，但是，我们现在是GUI。<br><a id="more"></a><br>处理键盘，主要有以下几种方法：</p><ul><li><code>WM_KEYDOWN</code>消息</li><li><code>WM_CHAR</code>消息</li><li><code>GetAsyncKeyState</code>函数</li></ul><h1 id="WM-KEYDOWN"><a href="#WM-KEYDOWN" class="headerlink" title="WM_KEYDOWN"></a>WM_KEYDOWN</h1><p>明显，这是一个Windows消息，会在键盘上的某个键被按下时发送。<br>但是如果真的用了这个消息，在按住时程序会很卡。</p><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p>这个称之为参数合适不合适……</p><h3 id="wParam"><a href="#wParam" class="headerlink" title="wParam"></a>wParam</h3><p>按键的虚拟键码，参见<a href="/9ea7215d45f55ac9/">虚拟按键编码</a></p><h3 id="lParam"><a href="#lParam" class="headerlink" title="lParam"></a>lParam</h3><p><code>lParam</code>的不同的二进制位代表不同的含义。见下表：</p><table><thead><tr><th>位</th><th>含义</th></tr></thead><tbody><tr><td>0-15</td><td>用户按住键而自动重复击键的次数</td></tr><tr><td>16-23</td><td>按键扫描码，由键盘生产厂家决定</td></tr><tr><td>24</td><td>指示是否为扩展按键(我也不知道什么意思)</td></tr><tr><td>25-28</td><td>保留</td></tr><tr><td>29</td><td>MSDN说是”The context code”，对于<code>WM_KEYDOWN</code>总是0</td></tr><tr><td>30</td><td>如果消息发送的时候按键是按下的为0，否则为1</td></tr><tr><td>31</td><td>MSDN说是”The transition code”，对于<code>WM_KEYDOWN</code>总是0</td></tr></tbody></table><h1 id="WM-CHAR"><a href="#WM-CHAR" class="headerlink" title="WM_CHAR"></a>WM_CHAR</h1><p>同样，一个Windows消息。</p><h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><h3 id="wParam-1"><a href="#wParam-1" class="headerlink" title="wParam"></a>wParam</h3><p>按键的字符编码，可直接使用<code>L&#39;字符&#39;</code>的形式，记住，<code>WM_CHAR</code>的<code>wParam</code>一直使用UTF-16！</p><h3 id="lParam-1"><a href="#lParam-1" class="headerlink" title="lParam"></a>lParam</h3><p>同样是一堆以二进制位表示的东西，如下：</p><table><thead><tr><th>位</th><th>含义</th></tr></thead><tbody><tr><td>0-15</td><td>用户按住键而自动重复击键的次数</td></tr><tr><td>16-23</td><td>按键扫描码，由键盘生产厂家决定</td></tr><tr><td>24</td><td>指示是否为扩展按键(我也不知道什么意思)</td></tr><tr><td>25-28</td><td>保留</td></tr><tr><td>29</td><td>指示Alt是否按下</td></tr><tr><td>30</td><td>如果消息发送的时候按键是按下的为0，否则为1</td></tr><tr><td>31</td><td>指示当前按键是否正在释放</td></tr></tbody></table><h1 id="GetAsyncKeyState"><a href="#GetAsyncKeyState" class="headerlink" title="GetAsyncKeyState"></a>GetAsyncKeyState</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>MSDN:</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SHORT <span class="title">GetAsyncKeyState</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span> vKey</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure><p>Visual Studio 2017 - WinUser.h:</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">WINUSERAPI SHORT WINAPI <span class="title">GetAsyncKeyState</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    _In_ <span class="keyword">int</span> vKey</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure><h2 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h2><h3 id="in-vKey"><a href="#in-vKey" class="headerlink" title="[in]vKey"></a>[in]vKey</h3><p>指定要测试的键的虚拟键码。<br>值得一提的是，<code>GetAsyncKeyState</code>对单个键起作用，所以可以同时检测多个按键。</p><h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回一堆除了最高位都无卵用的东西。而且其他的位还不一定是0。为了排除这些干扰，我们可以定义一个宏：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KEYDOWN(vk_code) 	((GetAsyncKeyState(vk_code) &amp; 0x8000) ? 1 : 0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KEYUP(vk_code)		((GetAsyncKeyState(vk_code) &amp; 0x8000) ? 0 : 1)</span></span><br></pre></td></tr></table></figure><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>使用键盘的地方很多，在此以按Esc键时退出为例。</p><h2 id="GetMessage消息循环"><a href="#GetMessage消息循环" class="headerlink" title="GetMessage消息循环"></a>GetMessage消息循环</h2><p>在<code>WndProc</code>的<code>switch</code>语句中加入：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> WM_KEYDOWN:&#123;</span><br><span class="line">	<span class="keyword">if</span>(wParam == VK_ESCAPE) &#123;</span><br><span class="line">		SendMessage(hWnd,WM_DESTROY,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="PeekMessage消息循环"><a href="#PeekMessage消息循环" class="headerlink" title="PeekMessage消息循环"></a>PeekMessage消息循环</h2><p>在消息循环的<code>if</code>后加入：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(KEYDOWN(VK_ESCAPE))&#123;</span><br><span class="line">	SendMessage(hWnd,WM_DESTROY,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><hr><h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a href="https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getasynckeystate" target="_blank" rel="noopener">GetAsyncKeyState</a><br><a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/wm-keydown" target="_blank" rel="noopener">WM_KEYDOWN</a><br><a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/wm-char" target="_blank" rel="noopener">WM_CHAR</a></p>
+        <p>键盘，是一个很重要的工具，负责用户输入。在CUI中，键盘处理从来就不是我们要操心的事，但是，我们现在是GUI。<br><a id="more"></a><br>处理键盘，主要有以下几种方法：</p>
+<ul>
+<li><code>WM_KEYDOWN</code>消息</li>
+<li><code>WM_CHAR</code>消息</li>
+<li><code>GetAsyncKeyState</code>函数</li>
+</ul>
+<h1 id="WM-KEYDOWN"><a href="#WM-KEYDOWN" class="headerlink" title="WM_KEYDOWN"></a>WM_KEYDOWN</h1><p>明显，这是一个Windows消息，会在键盘上的某个键被按下时发送。<br>但是如果真的用了这个消息，在按住时程序会很卡。</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p>这个称之为参数合适不合适……   </p>
+<h3 id="wParam"><a href="#wParam" class="headerlink" title="wParam"></a>wParam</h3><p>按键的虚拟键码，参见<a href="/9ea7215d45f55ac9/">虚拟按键编码</a></p>
+<h3 id="lParam"><a href="#lParam" class="headerlink" title="lParam"></a>lParam</h3><p><code>lParam</code>的不同的二进制位代表不同的含义。见下表：</p>
+<table>
+<thead>
+<tr>
+<th>位</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0-15</td>
+<td>用户按住键而自动重复击键的次数</td>
+</tr>
+<tr>
+<td>16-23</td>
+<td>按键扫描码，由键盘生产厂家决定</td>
+</tr>
+<tr>
+<td>24</td>
+<td>指示是否为扩展按键(我也不知道什么意思)</td>
+</tr>
+<tr>
+<td>25-28</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>29</td>
+<td>MSDN说是”The context code”，对于<code>WM_KEYDOWN</code>总是0</td>
+</tr>
+<tr>
+<td>30</td>
+<td>如果消息发送的时候按键是按下的为0，否则为1</td>
+</tr>
+<tr>
+<td>31</td>
+<td>MSDN说是”The transition code”，对于<code>WM_KEYDOWN</code>总是0</td>
+</tr>
+</tbody>
+</table>
+<h1 id="WM-CHAR"><a href="#WM-CHAR" class="headerlink" title="WM_CHAR"></a>WM_CHAR</h1><p>同样，一个Windows消息。</p>
+<h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><h3 id="wParam-1"><a href="#wParam-1" class="headerlink" title="wParam"></a>wParam</h3><p>按键的字符编码，可直接使用<code>L&#39;字符&#39;</code>的形式，记住，<code>WM_CHAR</code>的<code>wParam</code>一直使用UTF-16！</p>
+<h3 id="lParam-1"><a href="#lParam-1" class="headerlink" title="lParam"></a>lParam</h3><p>同样是一堆以二进制位表示的东西，如下：</p>
+<table>
+<thead>
+<tr>
+<th>位</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0-15</td>
+<td>用户按住键而自动重复击键的次数</td>
+</tr>
+<tr>
+<td>16-23</td>
+<td>按键扫描码，由键盘生产厂家决定</td>
+</tr>
+<tr>
+<td>24</td>
+<td>指示是否为扩展按键(我也不知道什么意思)</td>
+</tr>
+<tr>
+<td>25-28</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>29</td>
+<td>指示Alt是否按下</td>
+</tr>
+<tr>
+<td>30</td>
+<td>如果消息发送的时候按键是按下的为0，否则为1</td>
+</tr>
+<tr>
+<td>31</td>
+<td>指示当前按键是否正在释放</td>
+</tr>
+</tbody>
+</table>
+<h1 id="GetAsyncKeyState"><a href="#GetAsyncKeyState" class="headerlink" title="GetAsyncKeyState"></a>GetAsyncKeyState</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>MSDN:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SHORT <span class="title">GetAsyncKeyState</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span> vKey</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Visual Studio 2017 - WinUser.h:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">WINUSERAPI SHORT WINAPI <span class="title">GetAsyncKeyState</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    _In_ <span class="keyword">int</span> vKey</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h2><h3 id="in-vKey"><a href="#in-vKey" class="headerlink" title="[in]vKey"></a>[in]vKey</h3><p>指定要测试的键的虚拟键码。<br>值得一提的是，<code>GetAsyncKeyState</code>对单个键起作用，所以可以同时检测多个按键。</p>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回一堆除了最高位都无卵用的东西。而且其他的位还不一定是0。为了排除这些干扰，我们可以定义一个宏：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KEYDOWN(vk_code) 	((GetAsyncKeyState(vk_code) &amp; 0x8000) ? 1 : 0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KEYUP(vk_code)		((GetAsyncKeyState(vk_code) &amp; 0x8000) ? 0 : 1)</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>使用键盘的地方很多，在此以按Esc键时退出为例。</p>
+<h2 id="GetMessage消息循环"><a href="#GetMessage消息循环" class="headerlink" title="GetMessage消息循环"></a>GetMessage消息循环</h2><p>在<code>WndProc</code>的<code>switch</code>语句中加入：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> WM_KEYDOWN:&#123;</span><br><span class="line">	<span class="keyword">if</span>(wParam == VK_ESCAPE) &#123;</span><br><span class="line">		SendMessage(hWnd,WM_DESTROY,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="PeekMessage消息循环"><a href="#PeekMessage消息循环" class="headerlink" title="PeekMessage消息循环"></a>PeekMessage消息循环</h2><p>在消息循环的<code>if</code>后加入：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(KEYDOWN(VK_ESCAPE))&#123;</span><br><span class="line">	SendMessage(hWnd,WM_DESTROY,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a href="https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getasynckeystate" target="_blank" rel="noopener">GetAsyncKeyState</a><br><a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/wm-keydown" target="_blank" rel="noopener">WM_KEYDOWN</a><br><a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/wm-char" target="_blank" rel="noopener">WM_CHAR</a></p>
+
     </div>
 
     

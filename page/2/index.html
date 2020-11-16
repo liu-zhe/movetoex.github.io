@@ -384,7 +384,7 @@ p.spoiler {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>排序的实现方式不少，很多，非常多……</p>
+          <p>排序的实现方式不少，很多，非常多……   </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/933ca3151e976795/#more" rel="contents">
@@ -472,7 +472,10 @@ p.spoiler {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><code>va_list</code>用于接收函数的可变参数，<code>printf</code>之类的用于输入输出的函数经常使用可变参数列表。如<code>printf</code>的定义：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_Check_return_opt_ </span><br><span class="line"><span class="function">_CRT_STDIO_INLINE <span class="keyword">int</span> __CRTDECL <span class="title">printf</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	_In_z_ _Printf_format_string_ <span class="keyword">char</span> <span class="keyword">const</span>* <span class="keyword">const</span> _Format,</span></span></span><br><span class="line"><span class="function"><span class="params">	...)</span></span>;</span><br></pre></td></tr></table></figure><p>简化：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">printf</span><span class="params">(<span class="keyword">char</span> <span class="keyword">const</span>* _Format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+          <p><code>va_list</code>用于接收函数的可变参数，<code>printf</code>之类的用于输入输出的函数经常使用可变参数列表。如<code>printf</code>的定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_Check_return_opt_ </span><br><span class="line"><span class="function">_CRT_STDIO_INLINE <span class="keyword">int</span> __CRTDECL <span class="title">printf</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	_In_z_ _Printf_format_string_ <span class="keyword">char</span> <span class="keyword">const</span>* <span class="keyword">const</span> _Format,</span></span></span><br><span class="line"><span class="function"><span class="params">	...)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>简化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">printf</span><span class="params">(<span class="keyword">char</span> <span class="keyword">const</span>* _Format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/4793824e43f0d087/#more" rel="contents">
