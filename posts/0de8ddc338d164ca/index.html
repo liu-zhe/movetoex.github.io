@@ -1,1 +1,560 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 4.2.1"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png"><link rel="icon" type="image/png" sizes="32x32" href="/images/Creeper-32px.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/Creeper-16px.png"><link rel="mask-icon" href="/images/logo.svg" color="#222"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css"><script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script><script src="/js/runcode.js"></script><script class="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"movetoex.github.io",root:"/",images:"/images",scheme:"Pisces",version:"8.0.2",exturl:!1,sidebar:{position:"left",display:"post",padding:18,offset:12},copycode:!0,bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!1,mediumzoom:!1,lazyload:!1,pangu:!1,comments:{style:"tabs",active:null,storage:!0,lazyload:!1,nav:null},motion:{enable:!0,async:!0,transition:{post_block:"fadeIn",post_header:"fadeInDown",post_body:"fadeInDown",coll_header:"fadeInLeft",sidebar:"fadeInUp"}},i18n:{placeholder:"搜索...",empty:"没有找到任何搜索结果：${query}",hits_time:"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）",hits:"找到 ${hits} 个搜索结果"},path:"/search.xml",localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1}}</script><meta name="description" content="对一些C++11&#x2F;14&#x2F;17&#x2F;20的比较有意思的新特性的简要介绍仅包含一小部分比较有意思的，其他特性还请移步C++Ref"><meta property="og:type" content="article"><meta property="og:title" content="C++的新特性"><meta property="og:url" content="https://movetoex.github.io/posts/0de8ddc338d164ca/index.html"><meta property="og:site_name" content="MoveToEx&#39;s Blog"><meta property="og:description" content="对一些C++11&#x2F;14&#x2F;17&#x2F;20的比较有意思的新特性的简要介绍仅包含一小部分比较有意思的，其他特性还请移步C++Ref"><meta property="og:locale" content="zh_CN"><meta property="article:published_time" content="2020-04-13T21:57:24.000Z"><meta property="article:modified_time" content="2020-11-16T13:10:25.267Z"><meta property="article:author" content="MoveToEx"><meta property="article:tag" content="C++"><meta property="article:tag" content="C++11"><meta property="article:tag" content="C++14"><meta property="article:tag" content="C++17"><meta property="article:tag" content="C++20"><meta name="twitter:card" content="summary"><link rel="canonical" href="https://movetoex.github.io/posts/0de8ddc338d164ca/"><script class="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,lang:"zh-CN"}</script><title>C++的新特性 | MoveToEx's Blog</title><noscript><style>body{margin-top:2rem}.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header,.use-motion .sidebar{visibility:visible}.use-motion .footer,.use-motion .header,.use-motion .site-brand-container .toggle{opacity:initial}.use-motion .custom-logo-image,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line{transform:scaleX(1)}.search-pop-overlay,.sidebar-nav{display:none}.sidebar-panel{display:block}</style></noscript><style type="text/css">.spoiler{display:inline-flex}p.spoiler{display:flex}.spoiler a{pointer-events:none}.spoiler-blur,.spoiler-blur>*{transition:text-shadow .5s ease}.spoiler .spoiler-blur,.spoiler .spoiler-blur>*{color:transparent;background-color:rgba(0,0,0,0);text-shadow:0 0 10px grey;cursor:pointer}.spoiler .spoiler-blur:hover,.spoiler .spoiler-blur:hover>*{text-shadow:0 0 5px grey}.spoiler-box,.spoiler-box>*{transition:color .5s ease,background-color .5s ease}.spoiler .spoiler-box,.spoiler .spoiler-box>*{color:#000;background-color:#000;text-shadow:none}</style></head><body itemscope itemtype="http://schema.org/WebPage" class="use-motion"><div class="headband"></div><main class="main"><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line"></span> <span class="toggle-line"></span> <span class="toggle-line"></span></div></div><div class="site-meta"><a href="/" class="brand" rel="start"><i class="logo-line"></i><h1 class="site-title">MoveToEx's Blog</h1><i class="logo-line"></i></a><p class="site-subtitle" itemprop="description">MoveToEx IS JURUO!</p></div><div class="site-nav-right"><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class="site-nav"><ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-search"><a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索</a></li></ul></nav><div class="search-pop-overlay"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜索..." spellcheck="false" type="search" class="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div class="search-result-container no-result"><div class="search-result-icon"><i class="fa fa-spinner fa-pulse fa-5x"></i></div></div></div></div></div><div class="toggle sidebar-toggle"><span class="toggle-line"></span> <span class="toggle-line"></span> <span class="toggle-line"></span></div><aside class="sidebar"><div class="sidebar-inner sidebar-nav-active sidebar-toc-active"><ul class="sidebar-nav"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="sidebar-panel-container"><section class="post-toc-wrap sidebar-panel"><div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-11"><span class="nav-number">1.</span> <span class="nav-text">C++11</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#占位符类型说明符"><span class="nav-number">1.1.</span> <span class="nav-text">占位符类型说明符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认-amp-弃用函数"><span class="nav-number">1.2.</span> <span class="nav-text">默认 &amp; 弃用函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量表达式"><span class="nav-number">1.3.</span> <span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表初始化"><span class="nav-number">1.4.</span> <span class="nav-text">列表初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lambda表达式"><span class="nav-number">1.5.</span> <span class="nav-text">Lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空指针"><span class="nav-number">1.6.</span> <span class="nav-text">空指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#形参包"><span class="nav-number">1.7.</span> <span class="nav-text">形参包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性说明符"><span class="nav-number">1.8.</span> <span class="nav-text">属性说明符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于范围的for"><span class="nav-number">1.9.</span> <span class="nav-text">基于范围的for</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-14"><span class="nav-number">2.</span> <span class="nav-text">C++14</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量模板"><span class="nav-number">2.1.</span> <span class="nav-text">变量模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本运算符"><span class="nav-number">2.2.</span> <span class="nav-text">文本运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-17"><span class="nav-number">3.</span> <span class="nav-text">C++17</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#折叠表达式"><span class="nav-number">3.1.</span> <span class="nav-text">折叠表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构化绑定"><span class="nav-number">3.2.</span> <span class="nav-text">结构化绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任意类型的单个值"><span class="nav-number">3.3.</span> <span class="nav-text">任意类型的单个值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可选值"><span class="nav-number">3.4.</span> <span class="nav-text">可选值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-20"><span class="nav-number">4.</span> <span class="nav-text">C++ 20</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化"><span class="nav-number">4.1.</span> <span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三路比较运算符"><span class="nav-number">4.2.</span> <span class="nav-text">三路比较运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合初始化"><span class="nav-number">4.3.</span> <span class="nav-text">聚合初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">4.4.</span> <span class="nav-text">概念</span></a></li></ol></li></ol></div></section><section class="site-overview-wrap sidebar-panel"><div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" alt="MoveToEx" src="/images/avatar.png"><p class="site-author-name" itemprop="name">MoveToEx</p><div class="site-description" itemprop="description"></div></div><div class="site-state-wrap site-overview-item animated"><nav class="site-state"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">14</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">12</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">18</span> <span class="site-state-item-name">标签</span></a></div></nav></div><div class="links-of-author site-overview-item animated"><span class="links-of-author-item"><a href="https://github.com/MoveToEx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MoveToEx" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a> </span><span class="links-of-author-item"><a href="mailto:movetoex@outlook.com" title="E-Mail → mailto:movetoex@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a> </span><span class="links-of-author-item"><a href="https://www.luogu.com.cn/user/94507" title="Luogu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;94507" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Luogu</a></span></div><div class="cc-license site-overview-item animated" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-nd.svg" alt="Creative Commons"></a></div></section></div></div></aside><div class="sidebar-dimmer"></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><a href="https://github.com/MoveToEx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><noscript><div class="noscript-warning">Theme NexT works best with JavaScript enabled</div></noscript><div class="main-inner post posts-expand"><div class="post-block"><article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://movetoex.github.io/posts/0de8ddc338d164ca/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/avatar.png"><meta itemprop="name" content="MoveToEx"><meta itemprop="description" content=""></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="MoveToEx's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">C++的新特性</h1><div class="post-meta-container"><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2020-04-14 05:57:24" itemprop="dateCreated datePublished" datetime="2020-04-14T05:57:24+08:00">2020-04-14</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar-check"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2020-11-16 21:10:25" itemprop="dateModified" datetime="2020-11-16T21:10:25+08:00">2020-11-16</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-folder"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a> </span>， <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/C/%E6%96%B0%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">新特性</span></a></span></span></div></div></header><div class="post-body" itemprop="articleBody"><p>对一些C++11/14/17/20的比较有意思的新特性的简要介绍</p><p>仅包含一小部分比较有意思的，其他特性还请移步C++Ref</p><a id="more"></a><h1 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h1><h2 id="占位符类型说明符"><a href="#占位符类型说明符" class="headerlink" title="占位符类型说明符"></a>占位符类型说明符</h2><p>指示编译器自动推导变量类型的类型说明符</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto a &#x3D; 2;  &#x2F;&#x2F; int</span><br><span class="line">auto arr &#x3D; &#123; 1, 2, 3 &#125;; &#x2F;&#x2F; int[]</span><br><span class="line">auto ch &#x3D; &#39;a&#39;; &#x2F;&#x2F; char</span><br><span class="line">auto it &#x3D; v.begin(); &#x2F;&#x2F; vector&lt;int&gt;::iterator</span><br></pre></td></tr></table></figure><p>自C++14起能够推导函数返回值类型</p><h2 id="默认-amp-弃用函数"><a href="#默认-amp-弃用函数" class="headerlink" title="默认 &amp; 弃用函数"></a>默认 &amp; 弃用函数</h2><p>用于构造函数<br><code>default</code>指示该构造函数为默认构造函数，意即该函数默认初始化所有成员<br>一般情况下，编译器会将所有没写构造函数的类型的构造函数指定为默认构造函数<br>使用<code>default</code>强制编译器为其生成默认构造函数<br>使用<code>default</code>的类的所有成员均应满足 <em>DefaultConstructible</em> ，即该成员能够不带参数初始化，下面就是一个反例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class T &#123;</span><br><span class="line">	public:</span><br><span class="line">	int x, y, z;</span><br><span class="line">	&#x2F;&#x2F; T() &#x3D; default;</span><br><span class="line">	T(int x, int y, int z) : x(x), y(y), z(z) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">class _T &#123;</span><br><span class="line">	public:</span><br><span class="line">	T t;</span><br><span class="line">	_T() &#x3D; default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">_T x;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">	x.t.x &#x3D; 0;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>delete</code>指示该构造函数被弃用，若该构造函数重载被使用，则程序编译失败</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class T &#123;</span><br><span class="line">	public:</span><br><span class="line">	int x, y, z;</span><br><span class="line">	T() &#x3D; default;</span><br><span class="line">	T(int x, int y) &#x3D; delete;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">	T a(1, 2); &#x2F;&#x2F; Error</span><br><span class="line">	T x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="常量表达式"><a href="#常量表达式" class="headerlink" title="常量表达式"></a>常量表达式</h2><p>指示当前变量编译器在编译期间就应计算出值</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> MAXN = <span class="number">5e5</span> + <span class="number">5</span>;</span><br></pre></td></tr></table></figure><p>用在变量里和<code>const</code>差不多<br>用在函数返回值里能够指示编译器当前编译的函数的返回值要在编译时计算<br>使用<code>constexpr</code>做返回值的函数传入的参数也应为<code>constexpr</code></p><h2 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h2><p>能够以</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Type a &#x3D; &#123; 1, 2, 3 &#125;;</span><br><span class="line">Type x &#123; 1, 2, 3 &#125;;</span><br><span class="line">Type x(&#123; 1, 2, 3 &#125;);</span><br><span class="line">func(&#123; 1, 9, 2 &#125;);</span><br></pre></td></tr></table></figure><p>等类似形式调用函数<br><code>initializer_list&lt;Type&gt;</code>代表<code>Type</code>类型的列表<br><code>l.begin()</code>为指向第一个元素的迭代器<br><code>l.end()</code>为指向最后一个元素+1的迭代器<br><code>l.size()</code>为列表元素个数</p><button class="runcode-button" file="InitializerList.cpp"></button><h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>又称匿名函数，是一种无需定义函数名即可调用的函数</p><p>大多长这样：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[capture] (parameters) -&gt; <span class="keyword">mutable</span> return_type &#123; body &#125;</span><br></pre></td></tr></table></figure><ul><li>Capture: 用于捕获Lambda表达式外的变量，如下：<ul><li><code>[]</code>: 不指定任何变量，使用表达式外的变量将导致CE，但是不加<code>[]</code>也会CE</li><li><code>[x]</code>: <code>x</code>按值传递</li><li><code>[&amp;x]</code>: <code>x</code>按引用传递</li><li><code>[=]</code>: 任何<strong>被使用到</strong>的外部变量按值传递</li><li><code>[&amp;]</code>: 任何<strong>被使用到</strong>的外部变量按引用传递</li><li><code>[&amp;, x]</code>: <code>x</code>按值传递，其他用到的变量按引用传递，可以改变变量的个数，不可互换位置</li><li><code>[=, &amp;x]</code>: <code>x</code>按引用传递，其他按值传递，可以改变变量的个数，不可互换位置</li><li>特别的，类或结构体中的Lambda表达式需要显式捕捉<code>this</code>指针从而使用当前对象中的成员</li><li>函数可以访问的变量有：<ul><li>参数</li><li>函数内声明的变量</li><li>对象成员</li><li>全局变量</li><li>被捕获的变量</li></ul></li></ul></li><li>Parameters: 函数的参数，定义方法和C++中一般函数相同。注意，Lambda表达式与一般函数有下列不同：<ul><li>不能有缺省值 (如<code>int fun(int a = 10)</code>)</li><li>不能有可变参数 (如<code>int fun(int cnt, ...)</code>)</li><li>不能有无名参数 (如<code>int fun(int, int) {}</code>)</li></ul></li><li><code>mutable</code>: 如果出现<code>mutable</code>， 在Capture中指定<strong>按值传入的</strong>外部变量可以被更改，否则默认其为只读变量</li><li>Return_type: 函数的返回值类型。对于<code>void</code>函数，该项和前面的<code>-&gt;</code>可省略，但不可只出现一个</li><li>Body: 函数体</li></ul><button class="runcode-button" file="Lambda.cpp"></button><h2 id="空指针"><a href="#空指针" class="headerlink" title="空指针"></a>空指针</h2><p>和<code>NULL</code>差不多<br>那为啥要加一个这玩意呐<br>因为<code>NULL</code>是一个常量，一般被定义为<code>0</code><br>所以有的时候传入<code>NULL</code>作为参数的时候<br>会调用<code>long long</code>或者<code>int</code>的重载<br>所以C++11加入了<code>nullptr</code>代表空指针<br>这玩意应该不需要例子 当<code>NULL</code>用就可以</p><h2 id="形参包"><a href="#形参包" class="headerlink" title="形参包"></a>形参包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class ... Args&gt;</span><br><span class="line">class T &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;;</span><br><span class="line">T&lt;&gt; t;</span><br><span class="line">T&lt;int&gt; t2;</span><br><span class="line">T&lt;int, int, long, double&gt; t3;</span><br></pre></td></tr></table></figure><p>可变长度的<code>template</code>参数<br>也可用于定义函数等<br>函数的模板可以通过推导由编译器填入</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class ... Args&gt;</span><br><span class="line">void f(Args...x) &#123;&#125;</span><br><span class="line"></span><br><span class="line">f();</span><br><span class="line">f(1);</span><br><span class="line">f(1, 2, 3.0, &quot;awsl&quot;);</span><br></pre></td></tr></table></figure><p>形参包可以展开</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(&amp;args...); &#x2F;&#x2F; &#x3D;&gt; f(&amp;arg1, &amp;arg2, ...);</span><br><span class="line">f(n, ++args...); &#x2F;&#x2F; &#x3D;&gt; f(n, ++arg1, ++arg2, ...);</span><br><span class="line">f(g(args...) + args...) &#x2F;&#x2F; &#x3D;&gt; f(g(arg1, arg2, ...) + arg1, g(arg1, arg2, ...) + arg2, ...);</span><br></pre></td></tr></table></figure><p>但是好像没啥用的样子<br>C++17加入表达式折叠</p><p>顺便，这玩意可以写快读</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Ty</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">read</span>(<span class="title">Ty</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">	x = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span> ch = getchar();</span><br><span class="line">	<span class="keyword">int</span> f = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (ch == <span class="string">'-'</span>) f = -f;</span><br><span class="line">		ch = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch)) &#123;</span><br><span class="line">		x = x * <span class="number">10</span> + ch - <span class="string">'0'</span>;</span><br><span class="line">		ch = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	x *= f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Ty</span>, <span class="title">class</span> ... <span class="title">Var</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">read</span>(<span class="title">Ty</span>&amp; <span class="title">x</span>, <span class="title">Var</span>&amp;... <span class="title">args</span>) &#123;</span></span><br><span class="line">	read(x);</span><br><span class="line">	read(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="属性说明符"><a href="#属性说明符" class="headerlink" title="属性说明符"></a>属性说明符</h2><p>比较奇怪的东西</p><blockquote><p>为类型、对象、代码等引入由实现定义的属性。</p></blockquote><p>几乎可以用于所有东西</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[attr]]</span><br><span class="line">[[attr1, attr2(arg), ...]]</span><br><span class="line">[[namespace::attr1, ...]]</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[noreturn]]</span><br><span class="line">void f() &#123;</span><br><span class="line">	throw std::runtime_error(&quot;qwq&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以下是C++标准属性的一部分：</p><table><thead><tr><th style="text-align:center">属性</th><th style="text-align:center">含义</th><th style="text-align:center">C++版本</th></tr></thead><tbody><tr><td style="text-align:center"><code>[[noreturn]]</code></td><td style="text-align:center">函数不返回(抛出错误)</td><td style="text-align:center">11</td></tr><tr><td style="text-align:center"><code>[[deprecated]]</code>/<code>[[deprecated(&quot;reason&quot;)]]</code></td><td style="text-align:center">函数不推荐使用(由于 <em>reason</em>)，但允许使用</td><td style="text-align:center">14</td></tr><tr><td style="text-align:center"><code>[[nodiscard]]</code></td><td style="text-align:center">函数返回值不应被舍弃，否则输出警告</td><td style="text-align:center">17</td></tr><tr><td style="text-align:center"><code>[[maybe_unused]]</code></td><td style="text-align:center">函数的参数可能有未使用的参数，指示编译器不输出警告</td><td style="text-align:center">17</td></tr></tbody></table><p>其他C++标准属性请从页面底部跳转至C++Ref查看<br>编译器独有的属性请到编译器文档查看</p><h2 id="基于范围的for"><a href="#基于范围的for" class="headerlink" title="基于范围的for"></a>基于范围的for</h2><p>在范围上执行<code>for</code><br>值得注意的是，C++的<code>for (auto i : v)</code>不同于JS的<code>for (i in v)</code>，范围<code>for</code>的变量<code>i</code>不是键而是值<br>意即<code>v = { 3, 2, 1 }</code>时,<code>for (int i : v)</code>每轮<code>i</code>的值分别为<code>3, 2, 1</code></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; v &#x3D; &#123; 1, 9, 2, 6, 0, 8, 1, 7 &#125;;</span><br><span class="line">for (int i : v) &#123;</span><br><span class="line">	cout &lt;&lt; i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>自C++17起，可以使用<code>auto [x, y]</code>的结构化绑定形式</p><button class="runcode-button" file="RangeBasedFor.cpp"></button><h1 id="C-14"><a href="#C-14" class="headerlink" title="C++14"></a>C++14</h1><p>C++14 没啥比较好玩的东西 少写点吧<br><del>毕竟 C++Ref 的 C++14 都没啥东西</del></p><h2 id="变量模板"><a href="#变量模板" class="headerlink" title="变量模板"></a>变量模板</h2><p>顾名思义，变量也有模板了</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T&gt;</span><br><span class="line">T x &#x3D; 114514;</span><br></pre></td></tr></table></figure><h2 id="文本运算符"><a href="#文本运算符" class="headerlink" title="文本运算符"></a>文本运算符</h2><p>就像复数的赋值一样</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">complex x &#x3D; 2i;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TYPE operator &quot;&quot; CHAR (TYPE ARG) &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意，参数的类型只能是<code>unsigned long long</code>或<code>char</code><br><code>char</code>除了<code>_</code>之外的单个字符会报警告<br>且这种函数不能作为成员函数</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int operator&quot;&quot; _ (char ch) &#123;</span><br><span class="line">	return isdigit(ch) ? ch - &#39;0&#39; : (isupper(ch) ? ch - &#39;A&#39; + 10 : ch - &#39;a&#39; + 10);</span><br><span class="line">&#125;</span><br><span class="line">int main() &#123;</span><br><span class="line">	cout &lt;&lt; &#39;f&#39;_ &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>输出<code>15</code></p><h1 id="C-17"><a href="#C-17" class="headerlink" title="C++17"></a>C++17</h1><h2 id="折叠表达式"><a href="#折叠表达式" class="headerlink" title="折叠表达式"></a>折叠表达式</h2><p>以如下方式展开形参包：</p><ol><li>一元右折叠<code>(E opt ...)</code> =&gt; <code>(E1 opt (E2 opt ... (En-1 opt En)))</code></li><li>一元左折叠<code>(... opt E)</code> =&gt; <code>(((E1 opt E2) opt ...) opt En)</code></li><li>二元右折叠<code>(E opt ... opt I)</code> =&gt; <code>(E1 opt (... opt (En-1 opt (En opt I))))</code></li><li>二元左折叠<code>(I opt ... opt E)</code> =&gt; <code>((((I opt E1) opt E2) opt ...) opt En)</code></li></ol><p>如:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class...Ty&gt;</span><br><span class="line">bool all(Ty... args) &#123;</span><br><span class="line">	return (... &amp;&amp; args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool b &#x3D; all(true, false, true, true); </span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; ((true &amp;&amp; false) &amp;&amp; true) &amp;&amp; true</span><br><span class="line">&#x2F;&#x2F; &#x3D; false</span><br></pre></td></tr></table></figure><p>一元折叠用于零长度的包展开时，仅允许以下运算符：</p><ol><li><code>&amp;&amp;</code>, 值为<code>true</code></li><li><code>||</code>, 值为<code>false</code></li><li><code>,</code>, 值为<code>void()</code></li></ol><h2 id="结构化绑定"><a href="#结构化绑定" class="headerlink" title="结构化绑定"></a>结构化绑定</h2><blockquote><p>绑定指定名称到初始化器的子对象或元素。<br>类似引用，结构化绑定是既存对象的别名。不同于引用的是，结构化绑定的类型不必为引用类型。</p></blockquote><p>大概这样用:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] &#x3D; &#x2F;* Expression *&#x2F;;	&#x2F;&#x2F; 1</span><br><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] &#123; &#x2F;* Expression *&#x2F; &#125;;	&#x2F;&#x2F; 2</span><br><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] ( &#x2F;* Expression *&#x2F; );	&#x2F;&#x2F; 3</span><br></pre></td></tr></table></figure><p>其中<code>List</code>为标识符列表，<code>Expression</code>为表达式</p><p>请注意<code>Expression</code>的顶层不应含有<code>,</code>(文法上为 <em>赋值表达式</em>)，且其类型为数组或非<code>union</code><br><code>Expression</code>不应含有<code>List</code>中的标识符</p><p>例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">int a[] &#x3D; &#123; 2, 3, 3 &#125;;</span><br><span class="line">auto [x, y, z] &#x3D; a;</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">tuple&lt;int, char, string&gt; tpl(2, &#39;3&#39;, &quot;3&quot;);</span><br><span class="line">auto [x, y, z] &#x3D; tpl;</span><br><span class="line">&#x2F;&#x2F; auto [x, y, z] &#x3D; make_tuple(2, &#39;3&#39;, &quot;3&quot;);</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">int a[] &#x3D; &#123; 1, 2, 3 &#125;;</span><br><span class="line">auto&amp; [x, y, z] &#x3D; a;</span><br><span class="line">x &#x3D; 2, y &#x3D; 3;</span><br><span class="line">cout &lt;&lt; a[0] &lt;&lt; a[1] &lt;&lt; a[2];	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">struct S &#123;</span><br><span class="line">	int a, b, c;</span><br><span class="line">	S() &#x3D; default;</span><br><span class="line">	S(int a, int b, int c) : a(a), b(b), c(c) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">S f() &#123; return S(2, 3, 3); &#125;</span><br><span class="line">auto [x, y, z] &#x3D; f();</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br></pre></td></tr></table></figure><h2 id="任意类型的单个值"><a href="#任意类型的单个值" class="headerlink" title="任意类型的单个值"></a>任意类型的单个值</h2><p>头文件<code>&lt;any&gt;</code></p><p>逐渐向JS靠拢？（雾</p><p>正如其名，<code>any</code>可以存储任何类型的值<br><code>any::type()</code>可以返回类型的<code>typeid</code><br><code>any::reset()</code>可以销毁所含值<br><code>any::swap()</code>可以交换两个<code>any</code><br><code>any_cast&lt;Type&gt;(Any)</code>可以访问<code>Any</code>所容纳的对象，若类型错误会抛出<code>std::bad_any_cast</code>异常</p><button class="runcode-button" file="Any.cpp"></button><h2 id="可选值"><a href="#可选值" class="headerlink" title="可选值"></a>可选值</h2><p>头文件<code>&lt;optional&gt;</code><br>顾名思义，可以存在也可以不存在的值</p><p>空<code>optional</code>一般为<code>nullopt</code><br><code>optional::value()</code>可获取<code>*this</code>中存储的值，若<code>*this</code>不含值则抛出<code>std::bad_optional_access</code><br><code>optional::has_value()</code>可检查<code>*this</code>中是否有值，有则返回<code>true</code>，否则返回<code>false</code><br><code>optional::value_or(val)</code>在<code>*this</code>含有值则返回其存储的值，否则返回<code>val</code><br>运算符重载：</p><ul><li><code>operator *</code>/<code>operator -&gt;</code> - 访问<code>*this</code>中存储的值，不检查是否含值，若不含值则返回默认构造的值</li><li><code>operator bool</code> - 和<code>has_value()</code>等价</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">optional&lt;int&gt; proc(int x) &#123;</span><br><span class="line">	if (!x) &#123;</span><br><span class="line">		return nullopt;</span><br><span class="line">	&#125;</span><br><span class="line">	return x &lt;&lt; 1;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">optional&lt;int&gt; ans &#x3D; f();</span><br><span class="line">if (ans) &#123;		&#x2F;&#x2F; operator bool()</span><br><span class="line">&#x2F;&#x2F; if (ans.has_value()) &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">optional&lt;int&gt; ans &#x3D; f();</span><br><span class="line">try &#123;</span><br><span class="line">	cout &lt;&lt; f.value() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line">catch (exception&amp; e) &#123;</span><br><span class="line">	cout &lt;&lt; e.what() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="C-20"><a href="#C-20" class="headerlink" title="C++ 20"></a>C++ 20</h1><h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><p><code>sprintf</code>的安全替代品</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string s &#x3D; format(&quot;&#123;&#125; &#123;&#125; &#123;&#125;&quot;, &quot;Hello&quot;, &quot;C++&quot;, 20); &#x2F;&#x2F; s &#x3D;&#x3D; &quot;Hello C++ 20&quot;</span><br></pre></td></tr></table></figure><p>若提供的参数少于字符串中的<code>{}</code>个数，行为未定义<br>提供的参数多于字符串中的<code>{}</code>个数没关系</p><h2 id="三路比较运算符"><a href="#三路比较运算符" class="headerlink" title="三路比较运算符"></a>三路比较运算符</h2><p>形式为</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &lt;&#x3D;&gt; y</span><br></pre></td></tr></table></figure><p>表达式返回一个值，使得</p><ul><li><code>x &lt; y</code>则<code>(x &lt;=&gt; y) &lt; 0</code></li><li><code>x &gt; y</code>则<code>(x &lt;=&gt; y) &gt; 0</code></li><li><code>x == y</code>则<code>(x &lt;=&gt; y) == 0</code></li></ul><h2 id="聚合初始化"><a href="#聚合初始化" class="headerlink" title="聚合初始化"></a>聚合初始化</h2><p>不好说，看示例</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct S &#123;</span><br><span class="line">	int x, y, z;</span><br><span class="line">&#125;;</span><br><span class="line">S a &#x3D; &#123; .x &#x3D; 1, .y &#x3D; 2 &#125;;</span><br><span class="line">&#x2F;&#x2F; S c &#x3D; &#123; .y &#x3D; 1, .x &#x3D; 2 &#125; &#x2F;&#x2F; Error</span><br></pre></td></tr></table></figure><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>MoveToEx被<code>concept</code>整懵了，所以先写点能够理解的吧</p><p>所谓概念，是一种辅助编译器以及开发者定位问题的东西</p><p>C++Ref 如此描述概念的优点：</p><blockquote><p>在编译时检测约束违规，在模板实例化过程的早期进行，这导致错误信息更易理解。</p></blockquote><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; l = &#123;<span class="number">3</span>,<span class="number">-1</span>,<span class="number">10</span>&#125;;</span><br><span class="line"><span class="built_in">std</span>::sort(l.begin(), l.end()); </span><br><span class="line"><span class="comment">//无概念的典型编译器诊断：</span></span><br><span class="line"><span class="comment">//  invalid operands to binary expression ('std::_List_iterator&lt;int&gt;' and</span></span><br><span class="line"><span class="comment">//  'std::_List_iterator&lt;int&gt;')</span></span><br><span class="line"><span class="comment">//                           std::__lg(__last - __first) * 2);</span></span><br><span class="line"><span class="comment">//                                     ~~~~~~ ^ ~~~~~~~</span></span><br><span class="line"><span class="comment">// …… 50 行输出……</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//有概念的典型编译器诊断：</span></span><br><span class="line"><span class="comment">//  error: cannot call std::sort with std::_List_iterator&lt;int&gt;</span></span><br><span class="line"><span class="comment">//  note:  concept RandomAccessIterator&lt;std::_List_iterator&lt;int&gt;&gt; was not satisfied</span></span><br></pre></td></tr></table></figure><p>咕咕咕~</p></div><footer class="post-footer"><div class="post-copyright"><ul><li class="post-copyright-author"><strong>本文作者： </strong>MoveToEx</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://movetoex.github.io/posts/0de8ddc338d164ca/" title="C++的新特性">https://movetoex.github.io/posts/0de8ddc338d164ca/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li></ul></div><div class="post-tags"><a href="/tags/C/" rel="tag"># C++</a> <a href="/tags/C-11/" rel="tag"># C++11</a> <a href="/tags/C-14/" rel="tag"># C++14</a> <a href="/tags/C-17/" rel="tag"># C++17</a> <a href="/tags/C-20/" rel="tag"># C++20</a></div><div class="post-nav"><div class="post-nav-item"><a href="/posts/901a09ed661aa5e7/" rel="prev" title="MoveToEx的毒瘤码风"><i class="fa fa-chevron-left"></i> MoveToEx的毒瘤码风</a></div><div class="post-nav-item"><a href="/posts/Notice/" rel="next" title="公告板">公告板 <i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><script>window.addEventListener("tabs:register",()=>{let{activeClass:t}=CONFIG.comments;if(CONFIG.comments.storage&&(t=localStorage.getItem("comments_active")||t),t){const e=document.querySelector(`a[href="#comment-${t}"]`);e&&e.click()}}),CONFIG.comments.storage&&window.addEventListener("tabs:click",t=>{if(!t.target.matches(".tabs-comment .tab-content .tab-pane"))return;const e=t.target.classList[1];localStorage.setItem("comments_active",e)})</script></div></main><footer class="footer"><div class="footer-inner"><div class="copyright">&copy; <span itemprop="copyrightYear">2020</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">MoveToEx</span></div><div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动</div></div></footer><script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/local-search.js"></script><script>NProgress.configure({showSpinner:!0}),NProgress.start(),document.addEventListener("readystatechange",()=>{"interactive"===document.readyState&&NProgress.inc(.8),"complete"===document.readyState&&NProgress.done()}),document.addEventListener("pjax:send",()=>{NProgress.start()}),document.addEventListener("pjax:success",()=>{NProgress.done()})</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Creeper-32px.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Creeper-16px.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script src="/js/runcode.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"movetoex.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="对一些C++11&#x2F;14&#x2F;17&#x2F;20的比较有意思的新特性的简要介绍仅包含一小部分比较有意思的，其他特性还请移步C++Ref">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++的新特性">
+<meta property="og:url" content="https://movetoex.github.io/posts/0de8ddc338d164ca/index.html">
+<meta property="og:site_name" content="MoveToEx&#39;s Blog">
+<meta property="og:description" content="对一些C++11&#x2F;14&#x2F;17&#x2F;20的比较有意思的新特性的简要介绍仅包含一小部分比较有意思的，其他特性还请移步C++Ref">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-13T21:57:24.000Z">
+<meta property="article:modified_time" content="2020-11-16T13:10:25.267Z">
+<meta property="article:author" content="MoveToEx">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="C++11">
+<meta property="article:tag" content="C++14">
+<meta property="article:tag" content="C++17">
+<meta property="article:tag" content="C++20">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://movetoex.github.io/posts/0de8ddc338d164ca/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++的新特性 | MoveToEx's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<style type="text/css">
+.spoiler {
+  display: inline-flex;
+}
+p.spoiler {
+  display: flex;
+}
+.spoiler a {
+  pointer-events: none;
+}
+.spoiler-blur, .spoiler-blur > * {
+  transition: text-shadow .5s ease;
+}
+.spoiler .spoiler-blur, .spoiler .spoiler-blur > * {
+  color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 10px grey;
+  cursor: pointer;
+}
+.spoiler .spoiler-blur:hover, .spoiler .spoiler-blur:hover > * {
+  text-shadow: 0 0 5px grey;
+}
+.spoiler-box, .spoiler-box > * {
+  transition: color .5s ease,
+  background-color .5s ease;
+}
+.spoiler .spoiler-box, .spoiler .spoiler-box > * {
+  color: black;
+  background-color: black;
+  text-shadow: none;
+}</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">MoveToEx's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">MoveToEx IS JURUO!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-11"><span class="nav-number">1.</span> <span class="nav-text">C++11</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#占位符类型说明符"><span class="nav-number">1.1.</span> <span class="nav-text">占位符类型说明符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认-amp-弃用函数"><span class="nav-number">1.2.</span> <span class="nav-text">默认 &amp; 弃用函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量表达式"><span class="nav-number">1.3.</span> <span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表初始化"><span class="nav-number">1.4.</span> <span class="nav-text">列表初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lambda表达式"><span class="nav-number">1.5.</span> <span class="nav-text">Lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空指针"><span class="nav-number">1.6.</span> <span class="nav-text">空指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#形参包"><span class="nav-number">1.7.</span> <span class="nav-text">形参包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性说明符"><span class="nav-number">1.8.</span> <span class="nav-text">属性说明符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于范围的for"><span class="nav-number">1.9.</span> <span class="nav-text">基于范围的for</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-14"><span class="nav-number">2.</span> <span class="nav-text">C++14</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量模板"><span class="nav-number">2.1.</span> <span class="nav-text">变量模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本运算符"><span class="nav-number">2.2.</span> <span class="nav-text">文本运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-17"><span class="nav-number">3.</span> <span class="nav-text">C++17</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#折叠表达式"><span class="nav-number">3.1.</span> <span class="nav-text">折叠表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构化绑定"><span class="nav-number">3.2.</span> <span class="nav-text">结构化绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任意类型的单个值"><span class="nav-number">3.3.</span> <span class="nav-text">任意类型的单个值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可选值"><span class="nav-number">3.4.</span> <span class="nav-text">可选值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-20"><span class="nav-number">4.</span> <span class="nav-text">C++ 20</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化"><span class="nav-number">4.1.</span> <span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三路比较运算符"><span class="nav-number">4.2.</span> <span class="nav-text">三路比较运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合初始化"><span class="nav-number">4.3.</span> <span class="nav-text">聚合初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">4.4.</span> <span class="nav-text">概念</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="MoveToEx"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MoveToEx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MoveToEx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MoveToEx" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:movetoex@outlook.com" title="E-Mail → mailto:movetoex@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/94507" title="Luogu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;94507" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Luogu</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/MoveToEx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://movetoex.github.io/posts/0de8ddc338d164ca/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MoveToEx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoveToEx's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++的新特性
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-14 05:57:24" itemprop="dateCreated datePublished" datetime="2020-04-14T05:57:24+08:00">2020-04-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-16 21:10:25" itemprop="dateModified" datetime="2020-11-16T21:10:25+08:00">2020-11-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E6%96%B0%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">新特性</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>对一些C++11/14/17/20的比较有意思的新特性的简要介绍</p><p>仅包含一小部分比较有意思的，其他特性还请移步C++Ref</p><a id="more"></a><h1 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h1><h2 id="占位符类型说明符"><a href="#占位符类型说明符" class="headerlink" title="占位符类型说明符"></a>占位符类型说明符</h2><p>指示编译器自动推导变量类型的类型说明符</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto a &#x3D; 2;  &#x2F;&#x2F; int</span><br><span class="line">auto arr &#x3D; &#123; 1, 2, 3 &#125;; &#x2F;&#x2F; int[]</span><br><span class="line">auto ch &#x3D; &#39;a&#39;; &#x2F;&#x2F; char</span><br><span class="line">auto it &#x3D; v.begin(); &#x2F;&#x2F; vector&lt;int&gt;::iterator</span><br></pre></td></tr></table></figure><p>自C++14起能够推导函数返回值类型</p><h2 id="默认-amp-弃用函数"><a href="#默认-amp-弃用函数" class="headerlink" title="默认 &amp; 弃用函数"></a>默认 &amp; 弃用函数</h2><p>用于构造函数<br><code>default</code>指示该构造函数为默认构造函数，意即该函数默认初始化所有成员<br>一般情况下，编译器会将所有没写构造函数的类型的构造函数指定为默认构造函数<br>使用<code>default</code>强制编译器为其生成默认构造函数<br>使用<code>default</code>的类的所有成员均应满足 <em>DefaultConstructible</em> ，即该成员能够不带参数初始化，下面就是一个反例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class T &#123;</span><br><span class="line">	public:</span><br><span class="line">	int x, y, z;</span><br><span class="line">	&#x2F;&#x2F; T() &#x3D; default;</span><br><span class="line">	T(int x, int y, int z) : x(x), y(y), z(z) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">class _T &#123;</span><br><span class="line">	public:</span><br><span class="line">	T t;</span><br><span class="line">	_T() &#x3D; default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">_T x;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">	x.t.x &#x3D; 0;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>delete</code>指示该构造函数被弃用，若该构造函数重载被使用，则程序编译失败</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class T &#123;</span><br><span class="line">	public:</span><br><span class="line">	int x, y, z;</span><br><span class="line">	T() &#x3D; default;</span><br><span class="line">	T(int x, int y) &#x3D; delete;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">	T a(1, 2); &#x2F;&#x2F; Error</span><br><span class="line">	T x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="常量表达式"><a href="#常量表达式" class="headerlink" title="常量表达式"></a>常量表达式</h2><p>指示当前变量编译器在编译期间就应计算出值</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> MAXN = <span class="number">5e5</span> + <span class="number">5</span>;</span><br></pre></td></tr></table></figure><p>用在变量里和<code>const</code>差不多<br>用在函数返回值里能够指示编译器当前编译的函数的返回值要在编译时计算<br>使用<code>constexpr</code>做返回值的函数传入的参数也应为<code>constexpr</code></p><h2 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h2><p>能够以</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Type a &#x3D; &#123; 1, 2, 3 &#125;;</span><br><span class="line">Type x &#123; 1, 2, 3 &#125;;</span><br><span class="line">Type x(&#123; 1, 2, 3 &#125;);</span><br><span class="line">func(&#123; 1, 9, 2 &#125;);</span><br></pre></td></tr></table></figure><p>等类似形式调用函数<br><code>initializer_list&lt;Type&gt;</code>代表<code>Type</code>类型的列表<br><code>l.begin()</code>为指向第一个元素的迭代器<br><code>l.end()</code>为指向最后一个元素+1的迭代器<br><code>l.size()</code>为列表元素个数</p><button class="runcode-button" file="InitializerList.cpp"></button><h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>又称匿名函数，是一种无需定义函数名即可调用的函数</p><p>大多长这样：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[capture] (parameters) -&gt; <span class="keyword">mutable</span> return_type &#123; body &#125;</span><br></pre></td></tr></table></figure><ul><li>Capture: 用于捕获Lambda表达式外的变量，如下：<ul><li><code>[]</code>: 不指定任何变量，使用表达式外的变量将导致CE，但是不加<code>[]</code>也会CE</li><li><code>[x]</code>: <code>x</code>按值传递</li><li><code>[&amp;x]</code>: <code>x</code>按引用传递</li><li><code>[=]</code>: 任何<strong>被使用到</strong>的外部变量按值传递</li><li><code>[&amp;]</code>: 任何<strong>被使用到</strong>的外部变量按引用传递</li><li><code>[&amp;, x]</code>: <code>x</code>按值传递，其他用到的变量按引用传递，可以改变变量的个数，不可互换位置</li><li><code>[=, &amp;x]</code>: <code>x</code>按引用传递，其他按值传递，可以改变变量的个数，不可互换位置</li><li>特别的，类或结构体中的Lambda表达式需要显式捕捉<code>this</code>指针从而使用当前对象中的成员</li><li>函数可以访问的变量有：<ul><li>参数</li><li>函数内声明的变量</li><li>对象成员</li><li>全局变量</li><li>被捕获的变量</li></ul></li></ul></li><li>Parameters: 函数的参数，定义方法和C++中一般函数相同。注意，Lambda表达式与一般函数有下列不同：<ul><li>不能有缺省值 (如<code>int fun(int a = 10)</code>)</li><li>不能有可变参数 (如<code>int fun(int cnt, ...)</code>)</li><li>不能有无名参数 (如<code>int fun(int, int) {}</code>)</li></ul></li><li><code>mutable</code>: 如果出现<code>mutable</code>， 在Capture中指定<strong>按值传入的</strong>外部变量可以被更改，否则默认其为只读变量</li><li>Return_type: 函数的返回值类型。对于<code>void</code>函数，该项和前面的<code>-&gt;</code>可省略，但不可只出现一个</li><li>Body: 函数体</li></ul><button class="runcode-button" file="Lambda.cpp"></button><h2 id="空指针"><a href="#空指针" class="headerlink" title="空指针"></a>空指针</h2><p>和<code>NULL</code>差不多<br>那为啥要加一个这玩意呐<br>因为<code>NULL</code>是一个常量，一般被定义为<code>0</code><br>所以有的时候传入<code>NULL</code>作为参数的时候<br>会调用<code>long long</code>或者<code>int</code>的重载<br>所以C++11加入了<code>nullptr</code>代表空指针<br>这玩意应该不需要例子 当<code>NULL</code>用就可以</p><h2 id="形参包"><a href="#形参包" class="headerlink" title="形参包"></a>形参包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class ... Args&gt;</span><br><span class="line">class T &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;;</span><br><span class="line">T&lt;&gt; t;</span><br><span class="line">T&lt;int&gt; t2;</span><br><span class="line">T&lt;int, int, long, double&gt; t3;</span><br></pre></td></tr></table></figure><p>可变长度的<code>template</code>参数<br>也可用于定义函数等<br>函数的模板可以通过推导由编译器填入</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class ... Args&gt;</span><br><span class="line">void f(Args...x) &#123;&#125;</span><br><span class="line"></span><br><span class="line">f();</span><br><span class="line">f(1);</span><br><span class="line">f(1, 2, 3.0, &quot;awsl&quot;);</span><br></pre></td></tr></table></figure><p>形参包可以展开</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(&amp;args...); &#x2F;&#x2F; &#x3D;&gt; f(&amp;arg1, &amp;arg2, ...);</span><br><span class="line">f(n, ++args...); &#x2F;&#x2F; &#x3D;&gt; f(n, ++arg1, ++arg2, ...);</span><br><span class="line">f(g(args...) + args...) &#x2F;&#x2F; &#x3D;&gt; f(g(arg1, arg2, ...) + arg1, g(arg1, arg2, ...) + arg2, ...);</span><br></pre></td></tr></table></figure><p>但是好像没啥用的样子<br>C++17加入表达式折叠</p><p>顺便，这玩意可以写快读</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Ty</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">read</span>(<span class="title">Ty</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">	x = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span> ch = getchar();</span><br><span class="line">	<span class="keyword">int</span> f = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (ch == <span class="string">'-'</span>) f = -f;</span><br><span class="line">		ch = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch)) &#123;</span><br><span class="line">		x = x * <span class="number">10</span> + ch - <span class="string">'0'</span>;</span><br><span class="line">		ch = getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	x *= f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Ty</span>, <span class="title">class</span> ... <span class="title">Var</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">read</span>(<span class="title">Ty</span>&amp; <span class="title">x</span>, <span class="title">Var</span>&amp;... <span class="title">args</span>) &#123;</span></span><br><span class="line">	read(x);</span><br><span class="line">	read(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="属性说明符"><a href="#属性说明符" class="headerlink" title="属性说明符"></a>属性说明符</h2><p>比较奇怪的东西</p><blockquote><p>为类型、对象、代码等引入由实现定义的属性。</p></blockquote><p>几乎可以用于所有东西</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[attr]]</span><br><span class="line">[[attr1, attr2(arg), ...]]</span><br><span class="line">[[namespace::attr1, ...]]</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[noreturn]]</span><br><span class="line">void f() &#123;</span><br><span class="line">	throw std::runtime_error(&quot;qwq&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以下是C++标准属性的一部分：</p><table><thead><tr><th style="text-align:center">属性</th><th style="text-align:center">含义</th><th style="text-align:center">C++版本</th></tr></thead><tbody><tr><td style="text-align:center"><code>[[noreturn]]</code></td><td style="text-align:center">函数不返回(抛出错误)</td><td style="text-align:center">11</td></tr><tr><td style="text-align:center"><code>[[deprecated]]</code>/<code>[[deprecated(&quot;reason&quot;)]]</code></td><td style="text-align:center">函数不推荐使用(由于 <em>reason</em>)，但允许使用</td><td style="text-align:center">14</td></tr><tr><td style="text-align:center"><code>[[nodiscard]]</code></td><td style="text-align:center">函数返回值不应被舍弃，否则输出警告</td><td style="text-align:center">17</td></tr><tr><td style="text-align:center"><code>[[maybe_unused]]</code></td><td style="text-align:center">函数的参数可能有未使用的参数，指示编译器不输出警告</td><td style="text-align:center">17</td></tr></tbody></table><p>其他C++标准属性请从页面底部跳转至C++Ref查看<br>编译器独有的属性请到编译器文档查看</p><h2 id="基于范围的for"><a href="#基于范围的for" class="headerlink" title="基于范围的for"></a>基于范围的for</h2><p>在范围上执行<code>for</code><br>值得注意的是，C++的<code>for (auto i : v)</code>不同于JS的<code>for (i in v)</code>，范围<code>for</code>的变量<code>i</code>不是键而是值<br>意即<code>v = { 3, 2, 1 }</code>时,<code>for (int i : v)</code>每轮<code>i</code>的值分别为<code>3, 2, 1</code></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; v &#x3D; &#123; 1, 9, 2, 6, 0, 8, 1, 7 &#125;;</span><br><span class="line">for (int i : v) &#123;</span><br><span class="line">	cout &lt;&lt; i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>自C++17起，可以使用<code>auto [x, y]</code>的结构化绑定形式</p><button class="runcode-button" file="RangeBasedFor.cpp"></button><h1 id="C-14"><a href="#C-14" class="headerlink" title="C++14"></a>C++14</h1><p>C++14 没啥比较好玩的东西 少写点吧<br><del>毕竟 C++Ref 的 C++14 都没啥东西</del></p><h2 id="变量模板"><a href="#变量模板" class="headerlink" title="变量模板"></a>变量模板</h2><p>顾名思义，变量也有模板了</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T&gt;</span><br><span class="line">T x &#x3D; 114514;</span><br></pre></td></tr></table></figure><h2 id="文本运算符"><a href="#文本运算符" class="headerlink" title="文本运算符"></a>文本运算符</h2><p>就像复数的赋值一样</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">complex x &#x3D; 2i;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TYPE operator &quot;&quot; CHAR (TYPE ARG) &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意，参数的类型只能是<code>unsigned long long</code>或<code>char</code><br><code>char</code>除了<code>_</code>之外的单个字符会报警告<br>且这种函数不能作为成员函数</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int operator&quot;&quot; _ (char ch) &#123;</span><br><span class="line">	return isdigit(ch) ? ch - &#39;0&#39; : (isupper(ch) ? ch - &#39;A&#39; + 10 : ch - &#39;a&#39; + 10);</span><br><span class="line">&#125;</span><br><span class="line">int main() &#123;</span><br><span class="line">	cout &lt;&lt; &#39;f&#39;_ &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>输出<code>15</code></p><h1 id="C-17"><a href="#C-17" class="headerlink" title="C++17"></a>C++17</h1><h2 id="折叠表达式"><a href="#折叠表达式" class="headerlink" title="折叠表达式"></a>折叠表达式</h2><p>以如下方式展开形参包：</p><ol><li>一元右折叠<code>(E opt ...)</code> =&gt; <code>(E1 opt (E2 opt ... (En-1 opt En)))</code></li><li>一元左折叠<code>(... opt E)</code> =&gt; <code>(((E1 opt E2) opt ...) opt En)</code></li><li>二元右折叠<code>(E opt ... opt I)</code> =&gt; <code>(E1 opt (... opt (En-1 opt (En opt I))))</code></li><li>二元左折叠<code>(I opt ... opt E)</code> =&gt; <code>((((I opt E1) opt E2) opt ...) opt En)</code></li></ol><p>如:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class...Ty&gt;</span><br><span class="line">bool all(Ty... args) &#123;</span><br><span class="line">	return (... &amp;&amp; args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool b &#x3D; all(true, false, true, true); </span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; ((true &amp;&amp; false) &amp;&amp; true) &amp;&amp; true</span><br><span class="line">&#x2F;&#x2F; &#x3D; false</span><br></pre></td></tr></table></figure><p>一元折叠用于零长度的包展开时，仅允许以下运算符：</p><ol><li><code>&amp;&amp;</code>, 值为<code>true</code></li><li><code>||</code>, 值为<code>false</code></li><li><code>,</code>, 值为<code>void()</code></li></ol><h2 id="结构化绑定"><a href="#结构化绑定" class="headerlink" title="结构化绑定"></a>结构化绑定</h2><blockquote><p>绑定指定名称到初始化器的子对象或元素。<br>类似引用，结构化绑定是既存对象的别名。不同于引用的是，结构化绑定的类型不必为引用类型。</p></blockquote><p>大概这样用:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] &#x3D; &#x2F;* Expression *&#x2F;;	&#x2F;&#x2F; 1</span><br><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] &#123; &#x2F;* Expression *&#x2F; &#125;;	&#x2F;&#x2F; 2</span><br><span class="line">auto &#x2F;* Ref Opt *&#x2F; [ &#x2F;* List *&#x2F; ] ( &#x2F;* Expression *&#x2F; );	&#x2F;&#x2F; 3</span><br></pre></td></tr></table></figure><p>其中<code>List</code>为标识符列表，<code>Expression</code>为表达式</p><p>请注意<code>Expression</code>的顶层不应含有<code>,</code>(文法上为 <em>赋值表达式</em>)，且其类型为数组或非<code>union</code><br><code>Expression</code>不应含有<code>List</code>中的标识符</p><p>例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">int a[] &#x3D; &#123; 2, 3, 3 &#125;;</span><br><span class="line">auto [x, y, z] &#x3D; a;</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">tuple&lt;int, char, string&gt; tpl(2, &#39;3&#39;, &quot;3&quot;);</span><br><span class="line">auto [x, y, z] &#x3D; tpl;</span><br><span class="line">&#x2F;&#x2F; auto [x, y, z] &#x3D; make_tuple(2, &#39;3&#39;, &quot;3&quot;);</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">int a[] &#x3D; &#123; 1, 2, 3 &#125;;</span><br><span class="line">auto&amp; [x, y, z] &#x3D; a;</span><br><span class="line">x &#x3D; 2, y &#x3D; 3;</span><br><span class="line">cout &lt;&lt; a[0] &lt;&lt; a[1] &lt;&lt; a[2];	&#x2F;&#x2F; Output 233</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">struct S &#123;</span><br><span class="line">	int a, b, c;</span><br><span class="line">	S() &#x3D; default;</span><br><span class="line">	S(int a, int b, int c) : a(a), b(b), c(c) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">S f() &#123; return S(2, 3, 3); &#125;</span><br><span class="line">auto [x, y, z] &#x3D; f();</span><br><span class="line">cout &lt;&lt; x &lt;&lt; y &lt;&lt; z &lt;&lt; endl;	&#x2F;&#x2F; Output 233</span><br></pre></td></tr></table></figure><h2 id="任意类型的单个值"><a href="#任意类型的单个值" class="headerlink" title="任意类型的单个值"></a>任意类型的单个值</h2><p>头文件<code>&lt;any&gt;</code></p><p>逐渐向JS靠拢？（雾</p><p>正如其名，<code>any</code>可以存储任何类型的值<br><code>any::type()</code>可以返回类型的<code>typeid</code><br><code>any::reset()</code>可以销毁所含值<br><code>any::swap()</code>可以交换两个<code>any</code><br><code>any_cast&lt;Type&gt;(Any)</code>可以访问<code>Any</code>所容纳的对象，若类型错误会抛出<code>std::bad_any_cast</code>异常</p><button class="runcode-button" file="Any.cpp"></button><h2 id="可选值"><a href="#可选值" class="headerlink" title="可选值"></a>可选值</h2><p>头文件<code>&lt;optional&gt;</code><br>顾名思义，可以存在也可以不存在的值</p><p>空<code>optional</code>一般为<code>nullopt</code><br><code>optional::value()</code>可获取<code>*this</code>中存储的值，若<code>*this</code>不含值则抛出<code>std::bad_optional_access</code><br><code>optional::has_value()</code>可检查<code>*this</code>中是否有值，有则返回<code>true</code>，否则返回<code>false</code><br><code>optional::value_or(val)</code>在<code>*this</code>含有值则返回其存储的值，否则返回<code>val</code><br>运算符重载：</p><ul><li><code>operator *</code>/<code>operator -&gt;</code> - 访问<code>*this</code>中存储的值，不检查是否含值，若不含值则返回默认构造的值</li><li><code>operator bool</code> - 和<code>has_value()</code>等价</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">optional&lt;int&gt; proc(int x) &#123;</span><br><span class="line">	if (!x) &#123;</span><br><span class="line">		return nullopt;</span><br><span class="line">	&#125;</span><br><span class="line">	return x &lt;&lt; 1;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">optional&lt;int&gt; ans &#x3D; f();</span><br><span class="line">if (ans) &#123;		&#x2F;&#x2F; operator bool()</span><br><span class="line">&#x2F;&#x2F; if (ans.has_value()) &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">	&#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">optional&lt;int&gt; ans &#x3D; f();</span><br><span class="line">try &#123;</span><br><span class="line">	cout &lt;&lt; f.value() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line">catch (exception&amp; e) &#123;</span><br><span class="line">	cout &lt;&lt; e.what() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="C-20"><a href="#C-20" class="headerlink" title="C++ 20"></a>C++ 20</h1><h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><p><code>sprintf</code>的安全替代品</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string s &#x3D; format(&quot;&#123;&#125; &#123;&#125; &#123;&#125;&quot;, &quot;Hello&quot;, &quot;C++&quot;, 20); &#x2F;&#x2F; s &#x3D;&#x3D; &quot;Hello C++ 20&quot;</span><br></pre></td></tr></table></figure><p>若提供的参数少于字符串中的<code>{}</code>个数，行为未定义<br>提供的参数多于字符串中的<code>{}</code>个数没关系</p><h2 id="三路比较运算符"><a href="#三路比较运算符" class="headerlink" title="三路比较运算符"></a>三路比较运算符</h2><p>形式为</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &lt;&#x3D;&gt; y</span><br></pre></td></tr></table></figure><p>表达式返回一个值，使得</p><ul><li><code>x &lt; y</code>则<code>(x &lt;=&gt; y) &lt; 0</code></li><li><code>x &gt; y</code>则<code>(x &lt;=&gt; y) &gt; 0</code></li><li><code>x == y</code>则<code>(x &lt;=&gt; y) == 0</code></li></ul><h2 id="聚合初始化"><a href="#聚合初始化" class="headerlink" title="聚合初始化"></a>聚合初始化</h2><p>不好说，看示例</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct S &#123;</span><br><span class="line">	int x, y, z;</span><br><span class="line">&#125;;</span><br><span class="line">S a &#x3D; &#123; .x &#x3D; 1, .y &#x3D; 2 &#125;;</span><br><span class="line">&#x2F;&#x2F; S c &#x3D; &#123; .y &#x3D; 1, .x &#x3D; 2 &#125; &#x2F;&#x2F; Error</span><br></pre></td></tr></table></figure><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>MoveToEx被<code>concept</code>整懵了，所以先写点能够理解的吧</p><p>所谓概念，是一种辅助编译器以及开发者定位问题的东西</p><p>C++Ref 如此描述概念的优点：</p><blockquote><p>在编译时检测约束违规，在模板实例化过程的早期进行，这导致错误信息更易理解。</p></blockquote><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; l = &#123;<span class="number">3</span>,<span class="number">-1</span>,<span class="number">10</span>&#125;;</span><br><span class="line"><span class="built_in">std</span>::sort(l.begin(), l.end()); </span><br><span class="line"><span class="comment">//无概念的典型编译器诊断：</span></span><br><span class="line"><span class="comment">//  invalid operands to binary expression ('std::_List_iterator&lt;int&gt;' and</span></span><br><span class="line"><span class="comment">//  'std::_List_iterator&lt;int&gt;')</span></span><br><span class="line"><span class="comment">//                           std::__lg(__last - __first) * 2);</span></span><br><span class="line"><span class="comment">//                                     ~~~~~~ ^ ~~~~~~~</span></span><br><span class="line"><span class="comment">// …… 50 行输出……</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//有概念的典型编译器诊断：</span></span><br><span class="line"><span class="comment">//  error: cannot call std::sort with std::_List_iterator&lt;int&gt;</span></span><br><span class="line"><span class="comment">//  note:  concept RandomAccessIterator&lt;std::_List_iterator&lt;int&gt;&gt; was not satisfied</span></span><br></pre></td></tr></table></figure><p>咕咕咕~</p>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>MoveToEx
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://movetoex.github.io/posts/0de8ddc338d164ca/" title="C++的新特性">https://movetoex.github.io/posts/0de8ddc338d164ca/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/C-11/" rel="tag"># C++11</a>
+              <a href="/tags/C-14/" rel="tag"># C++14</a>
+              <a href="/tags/C-17/" rel="tag"># C++17</a>
+              <a href="/tags/C-20/" rel="tag"># C++20</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/901a09ed661aa5e7/" rel="prev" title="MoveToEx的毒瘤码风">
+                  <i class="fa fa-chevron-left"></i> MoveToEx的毒瘤码风
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/Notice/" rel="next" title="公告板">
+                  公告板 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoveToEx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
