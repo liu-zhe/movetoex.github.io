@@ -1,10 +1,1 @@
-document.addEventListener('DOMContentLoaded', () => {
-    var items = document.querySelectorAll('.runcode-button');
-    for (var i = 0; i < items.length; ++i) {
-        var fn = items[i].getAttribute('file')
-        items[i].innerHTML = '<i class="fa fa-code"></i>' + fn;
-        items[i].addEventListener('click', () => {
-            window.open(`/run-code/?${fn}`);
-        });
-    }
-});
+document.addEventListener("DOMContentLoaded",()=>{for(var e=document.querySelectorAll(".runcode-button"),t=0;t<e.length;++t){var n=e[t].getAttribute("file");e[t].innerHTML='<i class="fa fa-code"></i>'+n,e[t].addEventListener("click",e=>{window.open("/run-code/?"+e.target.getAttribute("file"))})}});
