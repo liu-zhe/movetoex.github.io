@@ -1,7 +1,7 @@
 <meta charset="utf8">
 
-<!-- <script src="/js/monaco-editor/min/vs/loader.js"></script> -->
-<script src="/js/require-2.3.6.min.js"></script>
+<script src="/js/monaco-editor/min/vs/loader.js"></script>
+<!-- <script src="/js/require-2.3.6.min.js"></script> -->
 <script src="/js/jquery-3.5.1.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -129,7 +129,7 @@ function run() {
     });
     document.querySelector('.run-btn').disabled = true;
     document.querySelector('.run-btn').innerHTML = '<i class="fa fa-spin fa-cog"></i> Running...';
-    $.post('http://coliru.stacked-crooked.com/compile', req, function(data) {
+    $.post('https://coliru.stacked-crooked.com/compile', req, function(data) {
         document.querySelector('.output-textfield').value = data;
         document.querySelector('.run-btn').disabled = false;
         document.querySelector('.run-btn').innerHTML = '<i class="fa fa-cog"></i> Run code';
