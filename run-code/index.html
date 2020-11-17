@@ -79,6 +79,8 @@ body {
     </script>
 </h3>
 
+<h3 class="runcode-loading"><i class="fa fa-spinner fa-spin"></i> Loading monaco-editor... </h3>
+
 <div class="src-container"></div>
 
 </div>
@@ -120,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             language: 'cpp'
         });
         fetchCode();
+        document.querySelector('.runcode-loading').remove();
     });
 });
 function run() {
