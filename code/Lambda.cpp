@@ -4,11 +4,10 @@
 using namespace std;
 
 int main() {
-	int a, b;
+	int a = 2, b = 3;
 	std::function<int(int, int)> add = [](int a, int b) -> int {
 		return a + b;
 	};
-	cin >> a >> b;
 	cout << add(a, b) << endl;
 	return 0;
 }

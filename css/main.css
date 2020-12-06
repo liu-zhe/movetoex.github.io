@@ -2361,17 +2361,41 @@ pre code {
   }
 }
 .runcode-button {
-  background-color: #fff;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  transition: linear 0.2s;
-  margin: auto;
+  border: 1px solid #000;
+  z-index: 1;
+  padding: 10px 25px;
+  min-width: 170px;
+  font-weight: 500;
+  background: transparent;
+  outline: none !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  font-size: 16px;
+  min-width: 170px;
+}
+.runcode-button:after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #000;
+  transition: all 0.3s ease;
 }
 .runcode-button:hover {
-  background-color: #0d9eff;
   color: #fff;
-  transition: linear 0.2s;
+}
+.runcode-button:hover:after {
+  top: 0;
+  height: 100%;
+}
+.runcode-button:active {
+  transition: all 0.3s ease;
+  top: 2px;
 }
 .category-all-page .category-all-title {
   text-align: center;
@@ -2694,6 +2718,13 @@ mark.search-keyword {
   border-bottom: 1px dashed #ff2a2a;
   color: #ff2a2a;
   font-weight: bold;
+}
+mjx-container[jax="CHTML"][display="true"],
+.has-jax {
+  overflow: auto hidden;
+}
+mjx-container[display="true"] + br {
+  display: none;
 }
 .use-motion .animated {
   animation-fill-mode: none;

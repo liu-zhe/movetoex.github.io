@@ -46,7 +46,7 @@ class BigInt : std::vector<int> {
 
 	bool operator<(BigInt x) {
 		if (size() != x.size()) return size() < x.size();
-		for (int i = 0; i < size(); ++i) {
+		for (int i = size() - 1; ~i; --i) {
 			if ((*this)[i] != x[i]) return (*this)[i] < x[i];
 		}
 		return false;
@@ -54,7 +54,7 @@ class BigInt : std::vector<int> {
 
 	bool operator>(BigInt x) {
 		if (size() != x.size()) return size() > x.size();
-		for (int i = 0; i < size(); ++i) {
+		for (int i = size() - 1; ~i; --i) {
 			if ((*this)[i] != x[i]) return (*this)[i] > x[i];
 		}
 		return false;
@@ -62,7 +62,7 @@ class BigInt : std::vector<int> {
 
 	bool operator==(BigInt x) {
 		if (size() != x.size()) return false;
-		for (int i = 0; i < size(); ++i) {
+		for (int i = size() - 1; ~i; --i) {
 			if ((*this)[i] != x[i]) return false;
 		}
 		return true;
@@ -112,8 +112,11 @@ class BigInt : std::vector<int> {
 	}
 
 	BigInt operator/(BigInt x) {
+		if (x == 0) {
+			throw std::invalid_argument("Divisor cannot be zero");
+		}
 		BigInt ans, a = *this;
-		for (int i = a.size() - x.size(); a >= x; --i) {
+		for (int i = a.size() - x.size() + 1; a >= x; --i) {
 			BigInt d(0, i);
 			d.back() = 1;
 			BigInt c = x * d;
@@ -122,12 +125,17 @@ class BigInt : std::vector<int> {
 				ans += d;
 			}
 		}
+		ans._helper();
 		return ans;
 	}
 
 	BigInt operator%(BigInt x) {
+		if (x == 0) {
+			throw std::invalid_argument("Divisor cannot be zero");
+		}
+		if (*this < x) return *this;
 		BigInt ans = *this;
-		for (int i = ans.size() - x.size(); ans >= x; --i) {
+		for (int i = ans.size() - x.size() + 1; ans >= x; --i) {
 			BigInt d(0, i);
 			d.back() = 1;
 			BigInt c = x * d;
@@ -135,6 +143,7 @@ class BigInt : std::vector<int> {
 				ans -= c;
 			}
 		}
+		ans._helper();
 		return ans;
 	}
 
