@@ -136,6 +136,9 @@ function run() {
         document.querySelector('.output-textfield').value = data;
         document.querySelector('.run-btn').disabled = false;
         document.querySelector('.run-btn').innerHTML = '<i class="fa fa-cog"></i> Run code';
+    }).fail(function() {
+        document.querySelector('.run-btn').disabled = false;
+        document.querySelector('.run-btn').innerHTML = '<i class="fa fa-warning"></i> Error';
     })
 }
 function fetchCode(file) {
