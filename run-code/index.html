@@ -13,33 +13,33 @@ Run Code
 </title>
 
 <style>
-
-body {
-    background-color: rgb(245, 247, 249);
-}
-
 .run-btn {
     text-align: center;
     background-color: white;
     border: none;
     outline: none;
-    border-radius: 4px;
     height: 50px;
     width: 400px;
     transition: linear 0.2s;
     margin: auto;
 }
 
-.run-btn:hover {
-    background-color: gray;
+.run-btn > .fa-angle-right {
     color: white;
+    transition: linear 0.1s;
+}
+
+.run-btn:hover > .fa-angle-right {
+    color: black;
+    transition: linear 0.1s;
+}
+
+.run-btn:hover {
     transition: linear 0.2s;
 }
 
-.run-btn[disabled]:hover {
-    background-color: #aaa;
+.run-btn[disabled]:hover > .fa-angle-right {
     color: white;
-    transition: linear 0.2s;
 }
 
 .src-container {
@@ -63,19 +63,29 @@ body {
     border-color: black;
     color: black;
 }
+
+a {
+    text-decoration: none;
+    color: rgb(17, 85, 204);
+}
+
+a:visited {
+    color: rgb(17, 85, 204);
+}
 </style>
 
 <div style="width: 800px; margin: auto;">
 
 <h3>
-    <button onclick='window.location.href = "/"' style="background: none; border: none; outline: none">
-        <i class="fa fa-home"></i>
-    </button>
-    <button onclick="window.history.back()" style="background: none; border: none; outline: none">
-        <i class="fa fa-arrow-left"></i>
-    </button>
+    <i class="fa fa-code"></i>
     <script>
-        document.write(window.location.href.split('?')[1]);
+        fn = window.location.href.split('?')[1];
+        if (fn) {
+            document.write(fn);
+        }
+        else {
+            document.write('Run Code');
+        }
     </script>
 </h3>
 
@@ -89,13 +99,13 @@ body {
 
 <div style="text-align: center;">
     <button id="run" class="run-btn">
+        <i class="fa fa-angle-right"></i>
         <span>
             <i class="fa fa-cog"></i> Run code
         </span>
     </button>
 </div>
 
-<br/>
 
 <div class="output-container">
 <h3>Output</h3>
@@ -103,6 +113,12 @@ body {
 </div>
 
 <br/>
+<br/>
+
+<div>
+<p style="text-align: center">Powered by <a href="https://github.com/Microsoft/monaco-editor" target="_blank" rel="noopener">monaco-editor</a>,<a href="http://coliru.stacked-crooked.com" target="_blank" rel="noopener">Coliru online compiler</a></p>
+</div>
+
 
 <script>
 
@@ -131,14 +147,15 @@ function run() {
         "src": editor.getValue()
     });
     document.querySelector('.run-btn').disabled = true;
-    document.querySelector('.run-btn').innerHTML = '<i class="fa fa-spin fa-cog"></i> Running...';
+    document.querySelector('.run-btn').querySelector('.fa-cog').classList.add('fa-spin');
     $.post('https://coliru.stacked-crooked.com/compile', req, function(data) {
         document.querySelector('.output-textfield').value = data;
         document.querySelector('.run-btn').disabled = false;
-        document.querySelector('.run-btn').innerHTML = '<i class="fa fa-cog"></i> Run code';
+        document.querySelector('.run-btn').querySelector('.fa-cog').classList.remove('fa-spin');
     }).fail(function() {
+        document.querySelector('.output-textfield').value = 'ERR';
         document.querySelector('.run-btn').disabled = false;
-        document.querySelector('.run-btn').innerHTML = '<i class="fa fa-warning"></i> Error';
+        document.querySelector('.run-btn').querySelector('.fa-cog').classList.remove('fa-spin');
     })
 }
 function fetchCode(file) {
@@ -161,6 +178,3 @@ function fetchCode(file) {
     }
 }
 </script>
-
-<p><br/><br><br/><br><br/><br><br/></p>
-<div><br>Powered by<br><a href="https://github.com/Microsoft/monaco-editor" target="_blank" rel="noopener">monaco-editor</a>,<a href="http://coliru.stacked-crooked.com" target="_blank" rel="noopener">Coliru online compiler</a><br></div>
